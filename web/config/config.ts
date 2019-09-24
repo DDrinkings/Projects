@@ -1,8 +1,8 @@
 import { IConfig, IPlugin } from 'umi-types';
 import defaultSettings from './defaultSettings'; // https://umijs.org/config/
-
 import slash from 'slash2';
 import webpackPlugin from './plugin.config';
+
 const { pwa, primaryColor } = defaultSettings;
 
 // preview.pro.ant.design only do not use in your production ;
@@ -188,4 +188,6 @@ export default {
     },
   },
   */
+  // 输出到spring boot目录结构的web静态资源根目录下
+  outputPath: '../src/main/resources/static/',
 } as IConfig;
