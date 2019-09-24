@@ -88,45 +88,20 @@ export default {
   routes: [
     {
       path: '/user',
-      component: '../layouts/UserLayout',
+      component: '../layouts/UserLayout2',
       routes: [
         {
-          name: 'login',
-          path: '/user/login',
-          component: './user/login',
+          name: 'in',
+          path: '/user/in',
+          component: './user/in',
         },
       ],
     },
     {
+      // 根路由重定向
       path: '/',
-      component: '../layouts/SecurityLayout',
-      routes: [
-        {
-          path: '/',
-          component: '../layouts/BasicLayout',
-          authority: ['admin', 'user'],
-          routes: [
-            {
-              path: '/',
-              redirect: '/welcome',
-            },
-            {
-              path: '/welcome',
-              name: 'welcome',
-              icon: 'smile',
-              component: './Welcome',
-            },
-            {
-              component: './404',
-            },
-          ],
-        },
-        {
-          component: './404',
-        },
-      ],
+      redirect: '/user/in',
     },
-
     {
       component: './404',
     },
@@ -190,4 +165,11 @@ export default {
   */
   // 输出到spring boot目录结构的web静态资源根目录下
   outputPath: '../src/main/resources/static/',
+  // 配置代理
+  proxy: {
+    '/api**/**': {
+      target: 'http://dev.local:8081/',
+      changeOrigin: true,
+    },
+  },
 } as IConfig;
