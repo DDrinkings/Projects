@@ -124,4 +124,46 @@ public class OrderService {
     String sign = SignUtil.sign(map, secret, "key");
     return sign;
   }
+
+  public String query(
+      String apiKey,
+      String tradeNo,
+      String amount,
+      String payType,
+      String modeType,
+      String comment,
+      String redComment)
+      throws IOException, NoSuchAlgorithmException {
+    InReq req = new InReq();
+    req.setVersion("0.0.1");
+    req.setTradeNo(tradeNo); // 商户单号
+    req.setApiKey(apiKey);
+    req.setType("buy"); // 买卖方向
+    req.setAmount(amount); // 金额
+    req.setUserId(req.getTradeNo()); // 玩家id
+    req.setOperSysType("Android"); // 用户终端操作系统类型
+    req.setTimeStamp(System.currentTimeMillis() + ""); // 13位时间戳
+    req.setPlatform(platform); //
+    req.setPayNotifyUrl(null); // 回调通知地址
+    req.setBcMerchantPublicKey(bcMerchantPublicKey); // BC商户的公钥
+    // 不签名的参数
+    req.setPayType(payType);
+    req.setModeType(modeType);
+    req.setComment(comment);
+    req.setRedComment(redComment);
+    req.setSign(sign(req, apiKey, secret)); // 签名
+
+    RequestBody requestBody =
+        MultipartBody.create(
+            MediaType.parse(org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE),
+            JSON.toJSONString(req));
+    String r =
+        httpClient
+            .newCall(new Request.Builder().post(requestBody).url(baseUrl + "diamond/in").build())
+            .execute()
+            .body()
+            .string();
+    log.info("入金下单返回, in response, r={}", r);
+    return r;
+  }
 }

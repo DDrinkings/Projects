@@ -1,21 +1,10 @@
 @import '~antd/es/style/themes/default.less';
 
-.login {
-  :global {
-    .ant-tabs .ant-tabs-bar {
-      margin-bottom: 24px;
-      text-align: center;
-      border-bottom: 0;
-    }
-
-    .ant-form-item {
-      margin: 0 2px 24px;
-    }
-  }
-
-  .getCaptcha {
-    display: block;
-    width: 100%;
+.main {
+  width: 368px;
+  margin: 0 auto;
+  @media screen and (max-width: @screen-sm) {
+    width: 95%;
   }
 
   .icon {
@@ -41,13 +30,10 @@
     }
   }
 
-  .prefixIcon {
-    color: @disabled-color;
-    font-size: @font-size-base;
-  }
-
-  .submit {
-    width: 100%;
-    margin-top: 24px;
+  :global {
+    .antd-pro-login-submit {
+      width: 100%;
+      margin-top: 24px;
+    }
   }
 }
