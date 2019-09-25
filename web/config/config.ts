@@ -177,4 +177,6 @@ export default {
             changeOrigin: true,
         },
     },
+    // 路由风格
+    history: 'hash',
 } as IConfig;
