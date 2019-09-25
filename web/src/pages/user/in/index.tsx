@@ -1,11 +1,17 @@
 import React, { PureComponent } from 'react';
-import { Affix, Button, Icon, Input, message, Tabs } from "antd";
+import { Affix, Button, Form, Icon, Input, message, Tabs } from "antd";
 import { connect } from "dva";
 import { InResp } from "@/pages/user/in/data";
 
 @connect(({ model, loading }) => ({ model, loading }))
 class In extends PureComponent<any> {
-    state = { amount: '', payType: 'alipay', comment: '', alipayActiveKey: 'alipay' }
+    state = {
+        amount: '',
+        payType: 'alipay',
+        comment: '',
+        alipayActiveKey: 'alipay',
+        amountInvalid: false,
+    }
 
     callback = (payway: string) => {
         if ('alipay' == payway) {
@@ -13,7 +19,6 @@ class In extends PureComponent<any> {
                 comment: '',
                 payType: this.state.alipayActiveKey
             })
-
         } else {
             this.setState({
                 comment: '',
@@ -27,15 +32,26 @@ class In extends PureComponent<any> {
         console.log(this.state)
         const { payType, amount, comment } = this.state
 
-        // 参数检查
+        // 参数检查, 手动容易理解, todo, 改成Form表单验证器
         if ('' == amount) {
             message.warning('请输入金额')
+            this.setState({
+                amountInvalid: true
+            })
             return
         }
-        if (0 > Number.parseFloat(amount) || 50000 < Number.parseFloat(amount)) {
+        console.log(amount)
+        console.log(typeof amount)
+        if (0.01 > Number.parseFloat(amount) || 50000 < Number.parseFloat(amount)) {
             message.warning('下单金额范围为0.01至50000之间')
+            this.setState({
+                amountInvalid: true
+            })
             return
         }
+        this.setState({
+            amountInvalid: false
+        })
         // 待完善
         if ('' == comment) {
             message.error('请填写正确的备注信息, 否则无法到账!!!')
@@ -71,6 +87,7 @@ class In extends PureComponent<any> {
                     <Tabs.TabPane tab={<div><Icon type="alipay-circle"/>支付宝</div>} key="alipay">
                         <Tabs defaultActiveKey="alipay" size="small" type="card" onTabClick={(value: string) => {
                             this.setState({
+                                comment: '',
                                 alipayActiveKey: value,
                                 payType: value,
                             })
@@ -126,14 +143,17 @@ class In extends PureComponent<any> {
                     </Tabs.TabPane>
                 </Tabs>
                 <br/>
-                <Input.Group>
-                    <Input addonBefore={"金额"} addonAfter={"元"} size="large" style={{ maxWidth: "250px" }}
+                <Form.Item
+                    validateStatus={this.state.amountInvalid ? "error" : "success"}
+                    help={this.state.amountInvalid && "0.01至50000之间的数字"}
+                >
+                    <Input addonBefore={"金额"} addonAfter={"元"} size="large" style={{ maxWidth: "250px" }} type="number"
                            onChange={e => {
                                this.setState({
                                    amount: e.target.value
                                })
                            }} value={this.state.amount}/>
-                </Input.Group>
+                </Form.Item>
                 <br/>
                 <br/>
                 <br/>
