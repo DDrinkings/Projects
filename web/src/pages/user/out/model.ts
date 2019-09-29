@@ -28,7 +28,7 @@ const Model: ModelType = {
       count: 0
     }
   },
-
+//如果是同步行为会直接通过Reducers改变State;如果是异步行为会先触发effects,然后流向reducers最终改变state
   effects: {
     * login({ payload, callback }, { call, put }) {
       const response = yield call(_login, payload)
@@ -37,6 +37,7 @@ const Model: ModelType = {
         type: 'loginSave',
         payload: response
       })
+      callback && callback(response)
     },
   },
 

@@ -14,8 +14,7 @@ class Index extends React.Component {
   render() {
     console.log(this.props)
     return (
-      <>hi
-        <hr/>
+      <>hi<hr/>
         state
         <div>username: {this.state.username}</div>
         <div>phone: {this.state.phone}</div>
@@ -51,11 +50,11 @@ class Index extends React.Component {
 
         <hr/>
         <Button onClick={() => {
-          this.props.dispatch({
+            this.props.dispatch({
             type: 'out2/login',
             payload: { username: "test", password: '123123' },
             callback: (response) => {
-
+              console.log(response)
             }
           })
         }} loading={this.props.loading.effects['out2/login']}>dispatch</Button>
