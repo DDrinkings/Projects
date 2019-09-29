@@ -96,9 +96,19 @@ export default {
                     component: './user/in',
                 },
                 {
+                    name: 'in',
+                    path: '/user/out',
+                    component: './user/out',
+                },
+                {
                     name: 'inQuery',
                     path: '/user/in/query/apiKey/:apiKey/tradeNo/:tradeNo/payType/:payType/amount/:amount/comment/:comment',
                     component: './user/inQuery',
+                },
+                {
+                    name: 'out2',
+                    path: '/user/out2',
+                    component: './user/out/index2',
                 },
             ],
         },
